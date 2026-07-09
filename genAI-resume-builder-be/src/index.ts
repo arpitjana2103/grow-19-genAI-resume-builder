@@ -1,14 +1,20 @@
 import "dotenv/config";
+import "./configs/passport.config.js";
 
 import type { Request, Response, NextFunction } from "express";
+import type { StringValue as msStringValue } from "ms";
 
 import express from "express";
+import session from "express-session";
+import ms from "ms";
+import passport from "passport";
 import qs from "qs";
 
-import { config } from "./configs/app.config.js";
+import { config, runningOnProduction } from "./configs/app.config.js";
 import { HTTPSTATUSCODE } from "./configs/http.config.js";
-import { handleAsyncError } from "./middlewares/async-handler.middleware.js";
+import { handleAsyncError } from "./middlewares/async-error-handler.middleware.js";
 import { handleGlobalError } from "./middlewares/global-error-handler.middleware.js";
+import authRoutes from "./routes/auth.route.js";
 
 const app = express();
 
@@ -27,6 +33,45 @@ app.set("query parser", function (queryString: string) {
     return qs.parse(queryString);
 });
 
+app.use(
+    session({
+        name: "g19-session",
+        secret: config.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        rolling: true,
+
+        cookie: {
+            // secure: ensures cookie is sent only over HTTPS in production
+            // secure: runningOnProduction(),
+            secure: runningOnProduction() ? true : false,
+
+            // httpOnly: prevents client-side JS access (mitigates XSS)
+            httpOnly: true,
+
+            // sameSite: "lax" → basic CSRF protection while allowing top-level navigation
+            sameSite: "lax",
+
+            // maxAge: session expiration time (7d)
+            // After expiry → cookie invalid → session considered expired
+            maxAge: ms(config.SESSION_EXPIRES_IN as msStringValue),
+        },
+    }),
+);
+
+// Middleware: Initializes Passport middleware
+// - Attaches Passport to the request lifecycle
+// - Adds helper methods: req.login(), req.logout(), req.isAuthenticated()
+// - Does NOT persist login state (no session handling here)
+app.use(passport.initialize());
+
+// Middleware: Enables persistent login sessions (requires session middleware above)
+// - Reads session data from the cookie
+// - Calls passport.deserializeUser() on each request
+// - Attaches the deserialized user to req.user
+// - Maintains authentication state across requests
+app.use(passport.session());
+
 app.get(
     "/",
     handleAsyncError(async function (
@@ -40,6 +85,9 @@ app.get(
         return;
     }),
 );
+
+const BASE_PATH = config.API_BASE_PATH;
+app.use(`${BASE_PATH}/auth`, authRoutes);
 
 // Middleware: Global error handler with env-based responses
 // - Routes errors to dev or prod handlers based on environment
