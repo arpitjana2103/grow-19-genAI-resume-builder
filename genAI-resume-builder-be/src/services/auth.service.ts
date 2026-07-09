@@ -11,7 +11,7 @@ export const destroySessionAndLogout = (req: Request, res: Response): Promise<vo
                 // ✅ SESSION_ID removed from MemoryStore entirely
                 // (not just cleared, fully deleted from server)
                 if (err) return reject(err);
-                res.clearCookie("to-session");
+                res.clearCookie("g19-session");
                 // ✅ Tells browser to delete the cookie
                 // Sets: Set-Cookie: to-session=; Max-Age=0
                 resolve();

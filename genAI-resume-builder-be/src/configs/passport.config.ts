@@ -102,7 +102,7 @@ passport.use(
                     });
                 }
 
-                user.password = "__REMOVED__";
+                user.password = "__REMOVED_FOR_SECURITY__";
                 done(null, user);
             } catch (error) {
                 done(error, false);

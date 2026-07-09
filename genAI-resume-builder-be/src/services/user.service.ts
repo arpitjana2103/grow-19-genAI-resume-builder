@@ -12,6 +12,13 @@ export const ensureUserService = async function (data: UserCreateInput): Promise
         let user = await prisma.user.findUnique({
             where: { email: data.email },
         });
+        if (user && data.provider !== user.provider) {
+            throw new AppError({
+                publicMessage: `User sign-in/up failed, Try to login with ${user.provider}`,
+                statusCode: HTTPSTATUSCODE.BAD_REQUEST,
+                errorCode: ErrorCodeEnum.AUTH_NOT_FOUND,
+            });
+        }
         if (!user) user = await createUserService(data);
         return user;
     } catch (error) {

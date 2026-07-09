@@ -4,6 +4,7 @@ import passport from "passport";
 import { config } from "../configs/app.config.js";
 import {
     handleGoogleAuthSuccess,
+    loginUserSuccess,
     logoutUser,
     registerUser,
 } from "../controllers/auth.controller.js";
@@ -31,6 +32,7 @@ authRoutes.route("/login").post(
         session: true,
         failWithError: true,
     }),
+    loginUserSuccess,
 );
 
 authRoutes.route("/logout").post(logoutUser);
