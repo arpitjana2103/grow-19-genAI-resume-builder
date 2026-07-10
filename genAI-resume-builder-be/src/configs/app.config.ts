@@ -11,6 +11,8 @@ export const config = {
     GOOGLE_CLIENT_SECRET: getEnv("GOOGLE_CLIENT_SECRET"),
     API_BASE_PATH: getEnv("BASE_PATH", "/api"),
 
+    REDIS_URI: getEnv("REDIS_URI", "redis://localhost:6379"),
+
     BACKEND_ORIGIN: getEnv("BACKEND_ORIGIN"),
     get_BACKEND_GOOGLE_CALLBACK_URL: function (): string {
         return getEnv("BACKEND_GOOGLE_CALLBACK_URL").replace(

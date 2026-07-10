@@ -4,11 +4,13 @@ import "./configs/passport.config.js";
 import type { Request, Response, NextFunction } from "express";
 import type { StringValue as msStringValue } from "ms";
 
+import { RedisStore } from "connect-redis";
 import express from "express";
 import session from "express-session";
 import ms from "ms";
 import passport from "passport";
 import qs from "qs";
+import { createClient } from "redis";
 
 import { config, runningOnProduction } from "./configs/app.config.js";
 import { HTTPSTATUSCODE } from "./configs/http.config.js";
@@ -33,8 +35,23 @@ app.set("query parser", function (queryString: string) {
     return qs.parse(queryString);
 });
 
+const redisClient = createClient({
+    url: config.REDIS_URI,
+});
+
+redisClient.connect().catch((err) => {
+    console.error("Redis client connection error:", err);
+});
+
+const redisStore = new RedisStore({
+    client: redisClient,
+    prefix: "g19-session:",
+    ttl: ms(config.SESSION_EXPIRES_IN as msStringValue) / 1000,
+});
+
 app.use(
     session({
+        store: redisStore,
         name: "g19-session",
         secret: config.SESSION_SECRET,
         resave: false,
