@@ -13,6 +13,8 @@ const userSchema = z.object({
     profilePic: z.string().nullable(),
 });
 
+export type TUser = z.infer<typeof userSchema>;
+
 // This matches your 'sendResponse' utility and 'global-error-handler'
 const baseResponseSchema = z.object({
     success: z.boolean(),

@@ -56,3 +56,18 @@ export function useLogoutMutation() {
         },
     });
 }
+
+/*
+onError: function (error) {
+    if (error instanceof AxiosError) {
+        // This is where your backend's JSON payload lives!
+        const backendErrorPayload = error.response?.data;
+
+        console.log(backendErrorPayload.message); // "Invalid email or password"
+        console.log(backendErrorPayload.errorCode); // "AUTH_NOT_FOUND"
+
+        // Show this message to the user in a Toast notification
+    }
+}
+
+*/
