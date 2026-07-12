@@ -95,7 +95,7 @@ passport.use(
 
                 if (!matchPassword) {
                     throw new AppError({
-                        internalMessage: `No user found for email: ${email}`,
+                        internalMessage: `Incorrect password, for email: ${email}`,
                         publicMessage: "Invalid email or password",
                         statusCode: HTTPSTATUSCODE.UNAUTHORIZED,
                         errorCode: ErrorCodeEnum.AUTH_NOT_FOUND,

@@ -8,7 +8,7 @@
     "main": "dist/index.js",
     "scripts": {
         "start:dev": "cross-env NODE_ENV=development tsx watch --clear-screen=true src/index.ts",
-        "start:dev-prod": "cross-env NODE_ENV=production tsx watch --clear-screen=true src/index.ts",
+        "start:prod:dev": "cross-env NODE_ENV=production tsx watch --clear-screen=true src/index.ts",
         "start:prod": "cross-env NODE_ENV=production node dist/index.js",
         "build": "rimraf dist && tsc",
         "typecheck": "tsc --noEmit",

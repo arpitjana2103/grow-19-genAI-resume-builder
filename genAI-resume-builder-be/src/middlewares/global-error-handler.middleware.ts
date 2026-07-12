@@ -2,7 +2,7 @@ import type { ErrorRequestHandler, Response } from "express";
 
 import { ZodError } from "zod";
 
-import { runningOnDevelopment, runningOnProduction } from "../configs/app.config.js";
+import { config, runningOnDevelopment, runningOnProduction } from "../configs/app.config.js";
 import { HTTPSTATUSCODE } from "../configs/http.config.js";
 import { logger } from "../configs/logger.config.js";
 import { ErrorCodeEnum } from "../enums/error-code.enum.js";
@@ -45,6 +45,7 @@ function sendErrForDev(err: unknown, res: Response): void {
         logger.error({ err: err }, err.internalMessage || err.publicMessage);
 
         sendResponse(res, {
+            env: config.NODE_ENV,
             statusCode: err.statusCode,
             status: "error",
             message: err.publicMessage,
@@ -56,8 +57,8 @@ function sendErrForDev(err: unknown, res: Response): void {
         logger.error({ err: err });
 
         sendResponse(res, {
+            env: config.NODE_ENV,
             statusCode: HTTPSTATUSCODE.INTERNAL_SERVER_ERROR,
-            env: "development",
             status: "error",
             error: err instanceof Error ? { message: err.message, stack: err.stack } : err,
         });
@@ -71,7 +72,7 @@ function sendErrForProd(err: unknown, res: Response): void {
         logger.error({ err: err }, err.internalMessage || err.publicMessage);
 
         sendResponse(res, {
-            env: "production",
+            env: config.NODE_ENV,
             statusCode: err.statusCode,
             status: "error",
             message: err.publicMessage,
@@ -81,7 +82,7 @@ function sendErrForProd(err: unknown, res: Response): void {
         logger.error({ err: err });
 
         sendResponse(res, {
-            env: "production",
+            env: config.NODE_ENV,
             statusCode: HTTPSTATUSCODE.INTERNAL_SERVER_ERROR,
             status: "error",
             message: "Something went wrong",
