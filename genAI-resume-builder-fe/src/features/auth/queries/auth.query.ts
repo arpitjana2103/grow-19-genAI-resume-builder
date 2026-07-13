@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 import { getUser, login, logout, register } from "../services/auth.service";
 

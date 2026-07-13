@@ -1,7 +1,7 @@
 import type { TUser } from "@/features/auth/schemas/auth.schema";
 
 import { createContext, useContext, useEffect, useMemo } from "react";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 import { useUserQuery } from "@/features/auth/queries/auth.query";
 
@@ -35,7 +35,14 @@ export const AuthProvider = function ({ children }: AuthProviderProps) {
         } else if (query.isError) {
             toast.error("Failed to get logged in user.", { id: TOAST_ID });
         }
-    }, [query.isLoading, query.isSuccess, query.isError, query.isFetching]);
+    }, [
+        query.isLoading,
+        query.isSuccess,
+        query.isError,
+        query.isFetching,
+        query.data?.username,
+        query.data,
+    ]);
 
     const value = useMemo(
         () => ({
@@ -43,7 +50,7 @@ export const AuthProvider = function ({ children }: AuthProviderProps) {
             isAuthenticated: !!query.data,
             isLoading: query.isLoading || query.isFetching,
         }),
-        [query.data, query.isLoading],
+        [query.data, query.isLoading, query.isFetching],
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
