@@ -26,7 +26,7 @@ export default function LoginView() {
     useEffect(() => {
         const errorMessage = searchParams.get("error");
         if (errorMessage) {
-            toast.error(errorMessage, { duration: 4000 });
+            toast.error(errorMessage);
             searchParams.delete("error");
             setSearchParams(searchParams, { replace: true });
         }

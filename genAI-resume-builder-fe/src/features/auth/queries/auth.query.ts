@@ -19,7 +19,7 @@ export function useRegisterMutation() {
     return useMutation({
         mutationFn: register,
         onMutate: function () {
-            toast.loading("Registering user...", { id: TOAST_ID });
+            toast.loading("Registering user ...", { id: TOAST_ID });
         },
         onSuccess: async function () {
             await queryClient.invalidateQueries({
@@ -47,7 +47,7 @@ export function useLoginMutation() {
     return useMutation({
         mutationFn: login,
         onMutate: function () {
-            toast.loading("Logging in...", { id: TOAST_ID });
+            toast.loading("Logging in ...", { id: TOAST_ID });
         },
         onSuccess: async function () {
             await queryClient.invalidateQueries({
@@ -76,7 +76,7 @@ export function useLogoutMutation() {
     return useMutation({
         mutationFn: logout,
         onMutate: function () {
-            toast.loading("Logging out...", { id: TOAST_ID });
+            toast.loading("Logging out ...", { id: TOAST_ID });
         },
         onSuccess: async function () {
             await queryClient.invalidateQueries({

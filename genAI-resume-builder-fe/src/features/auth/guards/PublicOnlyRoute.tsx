@@ -1,17 +1,22 @@
 import { Navigate, Outlet } from "react-router";
 
+import Spinner from "@/components/shared/Spinner";
 import { useAuthContext } from "@/providers/auth.provider";
 
 export default function PublicOnlyRoute() {
     const { isAuthenticated, isLoading } = useAuthContext();
-    // 1. Wait for auth state to finish loading
+
     if (isLoading) {
-        return <div>Loading...</div>; // (Replace with a spinner or return null)
+        return (
+            <div className="flex justify-center pt-20">
+                <Spinner className="h-20 w-20" strokeWidth={0.7} />
+            </div>
+        );
     }
-    // 2. If they ARE authenticated, don't let them see the login page! Kick them to the app.
+
     if (isAuthenticated) {
         return <Navigate to="/app" replace />;
     }
-    // 3. Otherwise, let them see the public page (like Login/Register)!
+
     return <Outlet />;
 }

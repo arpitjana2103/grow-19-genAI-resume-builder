@@ -1,13 +1,17 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 import { cn } from "@/lib/utils";
+import { useAuthContext } from "@/providers/auth.provider";
 
 import Logo from "../shared/Logo";
-import { Button } from "../ui/button";
+import MyButton from "../shared/MyButton";
 import Container from "./Container";
 
 export default function NavBar({ className }: { className?: string }) {
     const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const { isAuthenticated } = useAuthContext();
+    const isHomeRoute = pathname === "/";
     return (
         <header className={cn("w-screen", className)}>
             <Container>
@@ -18,9 +22,17 @@ export default function NavBar({ className }: { className?: string }) {
                         </Link>
                     </div>
 
-                    <div>
-                        <Button onClick={() => navigate("/login")}>Login</Button>
-                        <Button onClick={() => navigate("/register")}>Register</Button>
+                    <div className="flex gap-2">
+                        {!isAuthenticated && isHomeRoute && (
+                            <MyButton type="holo" onClick={() => navigate("/login")}>
+                                Login
+                            </MyButton>
+                        )}
+                        {isHomeRoute && (
+                            <MyButton type="filled" onClick={() => navigate("/app")}>
+                                Get Started
+                            </MyButton>
+                        )}
                     </div>
                 </div>
             </Container>
