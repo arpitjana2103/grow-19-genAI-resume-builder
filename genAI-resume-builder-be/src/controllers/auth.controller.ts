@@ -15,7 +15,7 @@ export const handleGoogleAuthSuccess = handleAsyncError(async function (
     req: Request,
     res: Response,
 ) {
-    return res.redirect(`${config.FRONTEND_ORIGIN}`);
+    return res.redirect(`${config.FRONTEND_ORIGIN}/app`);
 });
 
 export const registerUser = handleAsyncError(async function (

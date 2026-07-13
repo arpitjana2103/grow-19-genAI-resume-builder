@@ -1,6 +1,10 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { useSearchParams } from "react-router";
 
 import Container from "@/components/layout/Container";
+import { Button } from "@/components/ui/button";
 
 import { useLoginMutation } from "../queries/auth.query";
 
@@ -17,6 +21,17 @@ export default function LoginView() {
     } = useForm<LoginFormValues>();
     const loginMutation = useLoginMutation();
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+        const errorMessage = searchParams.get("error");
+        if (errorMessage) {
+            toast.error(errorMessage, { duration: 4000 });
+            searchParams.delete("error");
+            setSearchParams(searchParams, { replace: true });
+        }
+    }, [searchParams, setSearchParams]);
+
     const onSubmit = async function (data: LoginFormValues) {
         await loginMutation.mutateAsync({
             email: data.email,
@@ -27,6 +42,9 @@ export default function LoginView() {
     return (
         <Container>
             <main>
+                <a href="http://localhost:8000/api/auth/google">
+                    <Button>Login with Google</Button>
+                </a>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
                         <label htmlFor="email">Email</label>

@@ -22,10 +22,26 @@ authRoutes.route("/google").get(
 
 authRoutes.route("/google/callback").get(
     NoAuth,
-    passport.authenticate("google", {
-        session: true,
-        failureRedirect: `${config.get_FRONTEND_GOOGLE_CALLBACK_URL()}?status=failure`,
-    }),
+    (req, res, next) => {
+        passport.authenticate("google", { session: true }, (err: any, user: any, info: any) => {
+            if (err) {
+                const message = err.publicMessage || err.message || "Authentication failed";
+                return res.redirect(`${config.FRONTEND_ORIGIN}/login?error=${encodeURIComponent(message)}`);
+            }
+
+            if (!user) {
+                const message = info?.message || "Authentication failed";
+                return res.redirect(`${config.FRONTEND_ORIGIN}/login?error=${encodeURIComponent(message)}`);
+            }
+
+            req.logIn(user, (loginErr) => {
+                if (loginErr) {
+                    return res.redirect(`${config.FRONTEND_ORIGIN}/login?error=session_creation_failed`);
+                }
+                return next();
+            });
+        })(req, res, next);
+    },
     handleGoogleAuthSuccess,
 );
 

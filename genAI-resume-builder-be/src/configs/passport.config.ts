@@ -13,6 +13,7 @@ import { bcryptCompare } from "../utils/bcrypt.util.js";
 import { AppError } from "../utils/errors/app-error.util.js";
 import { config } from "./app.config.js";
 import { HTTPSTATUSCODE } from "./http.config.js";
+import { logger } from "./logger.config.js";
 
 passport.use(
     new GoogleStrategy(
