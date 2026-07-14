@@ -30,7 +30,7 @@ export const AuthProvider = function ({ children }: AuthProviderProps) {
                 const username = query.data?.username;
                 toast.success(`Welcome ${username} 💐`, { id: TOAST_ID });
             } else {
-                toast("User not logged in !", { id: TOAST_ID, icon: "🙂‍↔️" });
+                toast("User not logged in !", { id: TOAST_ID, icon: "⚠️" });
             }
         } else if (query.isError) {
             toast.error("Failed to get logged in user.", { id: TOAST_ID });
