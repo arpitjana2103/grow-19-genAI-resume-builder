@@ -1,5 +1,6 @@
 import "dotenv/config";
 import "./configs/passport.config.js";
+import "./services/ai.service.js";
 
 import type { Request, Response, NextFunction } from "express";
 import type { StringValue as msStringValue } from "ms";

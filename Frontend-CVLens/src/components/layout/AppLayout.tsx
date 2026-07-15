@@ -6,8 +6,8 @@ import NavBar from "./NavBar";
 export default function AppLayout() {
     return (
         <div className="flex h-dvh flex-col">
-            <NavBar />
-            <main className="flex-1">
+            <NavBar className="shrink-0 grow-0 basis-auto" />
+            <main className="shrink grow basis-auto">
                 <Container className="pb-20">
                     <Outlet />
                 </Container>

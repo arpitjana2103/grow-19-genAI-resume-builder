@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/_generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AuthProviderEnum {
+  EMAIL
+  GOOGLE
+}
+
+enum SkillSeverityEnum {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model User {
+  id               String            @id @default(cuid())
+  username         String
+  email            String            @unique
+  password         String?
+  profilePic       String?
+  provider         AuthProviderEnum
+  interviewReports InterviewReport[]
+}
+
+model InterviewReport {
+  id                  String               @id @default(cuid())
+  jobDescription      String
+  jobTitle            String
+  resumeData          String?
+  selfDescription     String?
+  matchScore          Int?
+  technicalQuestions  TechnicalQuestion[]
+  behavioralQuestions BehavioralQuestion[]
+  skillGaps           SkillGap[]
+  preparationPlan     PreparationPlan[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model BehavioralQuestion {
+  id        String @id @default(cuid())
+  question  String
+  intention String
+  answer    String
+
+  interviewReportId String
+  interviewReport   InterviewReport @relation(fields: [interviewReportId], references: [id], onDelete: Cascade)
+}
+
+model TechnicalQuestion {
+  id        String @id @default(cuid())
+  question  String
+  intention String
+  answer    String
+
+  interviewReportId String
+  interviewReport   InterviewReport @relation(fields: [interviewReportId], references: [id], onDelete: Cascade)
+}
+
+model SkillGap {
+  id       String            @id @default(cuid())
+  skill    String
+  severity SkillSeverityEnum
+
+  interviewReportId String
+  interviewReport   InterviewReport @relation(fields: [interviewReportId], references: [id], onDelete: Cascade)
+}
+
+model PreparationPlan {
+  id    String   @id @default(cuid())
+  day   Int
+  focus String
+  tasks String[] @default([])
+
+  interviewReportId String
+  interviewReport   InterviewReport @relation(fields: [interviewReportId], references: [id], onDelete: Cascade)
+}

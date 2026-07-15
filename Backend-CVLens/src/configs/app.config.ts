@@ -20,14 +20,9 @@ export const config = {
             this.BACKEND_ORIGIN,
         );
     },
+    GEMINI_API_KEY: getEnv("GEMINI_API_KEY"),
 
     FRONTEND_ORIGIN: getEnv("FRONTEND_ORIGIN"),
-    get_FRONTEND_GOOGLE_CALLBACK_URL: function (): string {
-        return getEnv("FRONTEND_GOOGLE_CALLBACK_URL").replace(
-            "<frontend_origin>",
-            this.FRONTEND_ORIGIN,
-        );
-    },
 };
 
 export const runningOnProduction = function (): boolean {
