@@ -35,10 +35,10 @@ model User {
 
 model InterviewReport {
   id                  String               @id @default(cuid())
-  jobDescription      String
   jobTitle            String
-  resumeData          String?
+  jobDescription      String
   selfDescription     String?
+  resumeData          String?
   matchScore          Int?
   technicalQuestions  TechnicalQuestion[]
   behavioralQuestions BehavioralQuestion[]
