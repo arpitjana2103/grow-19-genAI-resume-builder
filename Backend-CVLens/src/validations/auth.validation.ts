@@ -11,7 +11,7 @@ const passwordFieldSchema = z
     .regex(/[0-9]/, { message: "Must include at least one number" })
     .regex(/[^A-Za-z0-9]/, { message: "Must include at least one special character" });
 
-export const registrationUserSchema = z.object({
+export const registrationUserInputSchema = z.object({
     username: z.string().trim().min(1).max(30),
     email: emailFieldSchema,
     password: passwordFieldSchema,

@@ -16,8 +16,10 @@ import { createClient } from "redis";
 import { config, runningOnProduction } from "./configs/app.config.js";
 import { HTTPSTATUSCODE } from "./configs/http.config.js";
 import { handleAsyncError } from "./middlewares/async-error-handler.middleware.js";
+import { authProtect } from "./middlewares/auth.middleware.js";
 import { handleGlobalError } from "./middlewares/global-error-handler.middleware.js";
 import authRoutes from "./routes/auth.route.js";
+import interviewRoute from "./routes/interview.route.js";
 
 const app = express();
 
@@ -122,6 +124,7 @@ app.get(
 
 const BASE_PATH = config.API_BASE_PATH;
 app.use(`${BASE_PATH}/auth`, authRoutes);
+app.use(`${BASE_PATH}/interview`, authProtect, interviewRoute);
 
 // Middleware: Global error handler with env-based responses
 // - Routes errors to dev or prod handlers based on environment

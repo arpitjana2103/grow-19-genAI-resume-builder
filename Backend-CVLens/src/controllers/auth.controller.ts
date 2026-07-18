@@ -9,7 +9,7 @@ import { destroySessionAndLogout } from "../services/auth.service.js";
 import { createUserService } from "../services/user.service.js";
 import { AppError } from "../utils/errors/app-error.util.js";
 import { sendResponse } from "../utils/response.util.js";
-import { registrationUserSchema } from "../validations/auth.validation.js";
+import { registrationUserInputSchema } from "../validations/auth.validation.js";
 
 export const handleGoogleAuthSuccess = handleAsyncError(async function (
     req: Request,
@@ -23,7 +23,7 @@ export const registerUser = handleAsyncError(async function (
     res: Response,
     next: NextFunction,
 ) {
-    const { username, email, password } = registrationUserSchema.parse({ ...req.body });
+    const { username, email, password } = registrationUserInputSchema.parse({ ...req.body });
     // 1. check if user already exist
     const existingUser = await prisma.user.findUnique({
         where: {

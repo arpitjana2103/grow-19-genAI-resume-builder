@@ -4,7 +4,7 @@ import * as z from "zod";
 import { HTTPSTATUSCODE } from "../configs/http.config.js";
 import { ErrorCodeEnum } from "../enums/error-code.enum.js";
 import { AppError } from "../utils/errors/app-error.util.js";
-import { interViewReportAIResponseSchema } from "../validations/ai.validation.js";
+import { InterViewReportAIResponseSchema } from "../validations/ai.validation.js";
 
 // new GoogleGenAI({
 //     apiKey: config.GEMINI_API_KEY,
@@ -16,7 +16,7 @@ const models = {
     limitmin: "gemini-3.5-flash",
 };
 
-async function generateInterviewReport({
+export const generateInterviewReport = async function ({
     resume,
     selfDescription,
     jobDescription,
@@ -42,11 +42,11 @@ async function generateInterviewReport({
             response_format: {
                 type: "text",
                 mime_type: "application/json",
-                schema: z.toJSONSchema(interViewReportAIResponseSchema),
+                schema: z.toJSONSchema(InterViewReportAIResponseSchema),
             },
         });
 
-        const report = interViewReportAIResponseSchema.parse(JSON.parse(interaction.output_text!));
+        const report = InterViewReportAIResponseSchema.parse(JSON.parse(interaction.output_text!));
         return report;
     } catch (error: any) {
         if (error?.status === 429) {
@@ -66,4 +66,4 @@ async function generateInterviewReport({
             errorCode: ErrorCodeEnum.EXTERNAL_SERVICE_ERROR,
         });
     }
-}
+};
