@@ -2,6 +2,7 @@ import {
     Asterisk02Icon,
     Briefcase07Icon,
     Cancel01Icon,
+    CloudUploadIcon,
     DocumentAttachmentIcon,
     Job,
     MagicWand01Icon,
@@ -32,23 +33,17 @@ export default function AppView() {
                 <div className="mt-6 flex items-center justify-between">
                     <p>AI Powered Strategy Generation • 30s Approx </p>
 
-                    <div className="group cursor-pointer bg-background p-1.5">
-                        <Button className="!active:translate-y-0 cursor-pointer border-2 border-blue-300 bg-background px-3 py-4 text-lg text-foreground hover:bg-background/90">
-                            <span className="font-head">
-                                Generate With{" "}
-                                <span className="font-gemini font-medium text-blue-400">
-                                    Gemini
-                                </span>
+                    <Button className="cursor-pointer rounded-full bg-background px-5 py-6 text-lg text-foreground hover:bg-background/90">
+                        <span className="font-head">
+                            Generate With{" "}
+                            <span className="pl-1 font-gemini font-medium text-blue-400">
+                                Gemini
                             </span>
-                            <span>
-                                <img
-                                    className="h-6 w-6 group-hover:animate-spin"
-                                    src={geminiImg}
-                                    alt=""
-                                />
-                            </span>
-                        </Button>
-                    </div>
+                        </span>
+                        <span>
+                            <img className="h-6 w-6" src={geminiImg} alt="" />
+                        </span>
+                    </Button>
                 </div>
             </div>
         </>
@@ -165,63 +160,66 @@ function ResumeUpload() {
                 htmlFor="resume-upload"
                 className="block h-40 w-full cursor-pointer bg-foreground p-2"
             >
-                {!file && (
+                <div
+                    onDragEnter={handleDragEnter}
+                    onDragLeave={handleDragLeave}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    className={cn(
+                        "flex h-full items-center justify-center border-2 border-dashed border-primary text-background",
+                        drag && "border-solid",
+                    )}
+                >
                     <div
-                        onDragEnter={handleDragEnter}
-                        onDragLeave={handleDragLeave}
-                        onDragOver={handleDragOver}
-                        onDrop={handleDrop}
                         className={cn(
-                            "flex h-full items-center justify-center border-2 border-dashed border-primary text-background",
-                            drag && "border-solid",
+                            "flex flex-col items-center justify-between h-full p-4",
+                            drag && "opacity-0",
                         )}
                     >
-                        <div
-                            className={cn(
-                                "flex flex-col items-center justify-center",
-                                drag && "opacity-0",
-                            )}
-                        >
-                            <span>
-                                <HugeiconsIcon
-                                    icon={Pdf02Icon}
-                                    strokeWidth={1}
-                                    className="h-12 w-12 text-primary"
-                                />
-                            </span>
-                            <p className="mt-2 text-lg">Click to Upload Resume or Drag & Drop </p>
-                            <p className="mt-1 text-sm text-background/70">{`File Type : PDF | Max Size : 3MB | Max PageCount : 2`}</p>
-                        </div>
-                    </div>
-                )}
-                {file && (
-                    <div className="flex h-full items-center justify-center gap-4 border-2 border-dashed border-primary text-background/95">
-                        <button
-                            onClick={handleRemoveFile}
-                            className="cursor-pointer border-2 border-primary"
-                        >
+                        <span>
                             <HugeiconsIcon
-                                icon={Cancel01Icon}
-                                strokeWidth={2}
-                                className="h-6 w-6 text-primary"
+                                icon={CloudUploadIcon}
+                                strokeWidth={1}
+                                className="h-12 w-12 text-primary"
                             />
-                        </button>
-                        <div>
-                            <HugeiconsIcon
-                                icon={Pdf01Icon}
-                                strokeWidth={0.8}
-                                className="h-20 w-20 text-primary"
-                            />
-                        </div>
-                        <div className="">
-                            <p className="text-xl">
-                                {file.name.slice(0, 30)}
-                                {file.name.length > 30 ? "..." : ""}
-                            </p>
-                            <span className="text-background/70">{formatFileSize(file.size)}</span>
-                        </div>
+                        </span>
+                        {!file && (
+                            <div>
+                                <p className="mt-2 text-lg">
+                                    Click to Upload Resume or Drag & Drop{" "}
+                                </p>
+                                <p className="mt-1 text-sm text-background/70">{`File Type : PDF | Max Size : 3MB | Max PageCount : 2`}</p>
+                            </div>
+                        )}
+                        {file && (
+                            <div className="flex items-center justify-center gap-2.5">
+                                <button onClick={handleRemoveFile} className="cursor-pointer">
+                                    <HugeiconsIcon
+                                        icon={Cancel01Icon}
+                                        strokeWidth={2.5}
+                                        className="h-4 w-4 text-primary"
+                                    />
+                                </button>
+                                <div>
+                                    <HugeiconsIcon
+                                        icon={Pdf01Icon}
+                                        strokeWidth={1}
+                                        className="h-10 w-10 text-primary"
+                                    />
+                                </div>
+                                <div className="">
+                                    <p className="text-base">
+                                        {file.name.slice(0, 30)}
+                                        {file.name.length > 30 ? "..." : ""}
+                                    </p>
+                                    <span className="text-sm text-background/70">
+                                        {formatFileSize(file.size)}
+                                    </span>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                )}
+                </div>
             </label>
             {!file && (
                 <input type="file" onChange={handleSelect} id="resume-upload" className="hidden" />
