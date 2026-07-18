@@ -1,5 +1,5 @@
 :root {
-    --greenColor: #6BE3A2;
+    --greenColor: #6ae3a1;
     --greenColorDark: #60cc92;
 
 
@@ -12,7 +12,7 @@
     --primary: var(--greenColor);
     --primaryDark: var(--greenColorDark);
     --foreground: var(--slate700);
-    --background: var(--green100);
+    --background: var(--green50);
     --border: var(--foreground);
     --ring: var(--primary);
     --muted-foreground: var(--slate400);

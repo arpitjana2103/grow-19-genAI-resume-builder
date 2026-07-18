@@ -2,7 +2,8 @@
 
     --font-head: "Stack Sans Notch", sans-serif;
     --font-des: "Open Sans", sans-serif;
-    --font-emoji: "Mozilla Text", sans-serif;
+    --font-emoji: "Noto Color Emoji", sans-serif;
+    --font-gemini: "Google Sans", sans-serif;
 
     --font-heading: var(--font-head);
     --color-sidebar-ring: var(--sidebar-ring);
