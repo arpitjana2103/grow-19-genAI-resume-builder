@@ -30,7 +30,7 @@ export const registerResponseSchema = baseResponseSchema.extend({
         .object({
             user: z.object({
                 name: z.string(),
-                email: z.string().email(),
+                email: z.email(),
             }),
         })
         .optional(),

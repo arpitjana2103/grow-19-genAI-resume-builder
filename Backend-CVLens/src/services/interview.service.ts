@@ -56,65 +56,68 @@ export const createInterViewReportService = async function (data: TInterviewRepo
         });
 
         return interviewReport.id;
-
-        // 6. Return the complete report
-        // return await tx.interviewReport.findUniqueOrThrow({
-        //     where: {
-        //         id: interviewReport.id,
-        //     },
-        //     include: {
-        //         technicalQuestions: true,
-        //         behavioralQuestions: true,
-        //         skillGaps: true,
-        //         preparationPlan: true,
-        //     },
-        // });
-
-        // return await tx.interviewReport.findUniqueOrThrow({
-        //     where: {
-        //         id: interviewReport.id,
-        //     },
-        //     select: {
-        //         id: true,
-        //         jobTitle: true,
-        //         jobDescription: true,
-        //         selfDescription: true,
-        //         resumeData: true,
-        //         matchScore: true,
-        //         createdAt: true,
-        //         updatedAt: true,
-
-        //         technicalQuestions: {
-        //             select: {
-        //                 question: true,
-        //                 intention: true,
-        //                 answer: true,
-        //             },
-        //         },
-
-        //         behavioralQuestions: {
-        //             select: {
-        //                 question: true,
-        //                 intention: true,
-        //                 answer: true,
-        //             },
-        //         },
-
-        //         skillGaps: {
-        //             select: {
-        //                 skill: true,
-        //                 severity: true,
-        //             },
-        //         },
-
-        //         preparationPlan: {
-        //             select: {
-        //                 day: true,
-        //                 focus: true,
-        //                 tasks: true,
-        //             },
-        //         },
-        //     },
-        // });
     });
+};
+
+export const getInterviewReportByIdService = async function (id: string, userId: string) {
+    // 6. Return the complete report
+    return await prisma.interviewReport.findUnique({
+        where: {
+            id: id,
+            userId: userId,
+        },
+        include: {
+            technicalQuestions: true,
+            behavioralQuestions: true,
+            skillGaps: true,
+            preparationPlan: true,
+        },
+    });
+
+    // return await tx.interviewReport.findUniqueOrThrow({
+    //     where: {
+    //         id: interviewReport.id,
+    //     },
+    //     select: {
+    //         id: true,
+    //         jobTitle: true,
+    //         jobDescription: true,
+    //         selfDescription: true,
+    //         resumeData: true,
+    //         matchScore: true,
+    //         createdAt: true,
+    //         updatedAt: true,
+
+    //         technicalQuestions: {
+    //             select: {
+    //                 question: true,
+    //                 intention: true,
+    //                 answer: true,
+    //             },
+    //         },
+
+    //         behavioralQuestions: {
+    //             select: {
+    //                 question: true,
+    //                 intention: true,
+    //                 answer: true,
+    //             },
+    //         },
+
+    //         skillGaps: {
+    //             select: {
+    //                 skill: true,
+    //                 severity: true,
+    //             },
+    //         },
+
+    //         preparationPlan: {
+    //             select: {
+    //                 day: true,
+    //                 focus: true,
+    //                 tasks: true,
+    //             },
+    //         },
+    //     },
+    // });
 };

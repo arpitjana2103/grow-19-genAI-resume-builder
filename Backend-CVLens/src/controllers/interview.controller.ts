@@ -4,11 +4,17 @@ import { HTTPSTATUSCODE } from "../configs/http.config.js";
 import { ErrorCodeEnum } from "../enums/error-code.enum.js";
 import { handleAsyncError } from "../middlewares/async-error-handler.middleware.js";
 import { generateInterviewReport } from "../services/ai.service.js";
-import { createInterViewReportService } from "../services/interview.service.js";
+import {
+    createInterViewReportService,
+    getInterviewReportByIdService,
+} from "../services/interview.service.js";
 import { parsePDF } from "../services/pdf-parser.service.js";
 import { AppError } from "../utils/errors/app-error.util.js";
 import { sendResponse } from "../utils/response.util.js";
-import { generateInterviewReportInputSchema } from "../validations/interview.validation.js";
+import {
+    generateInterviewReportInputSchema,
+    interviewReportIdSchema,
+} from "../validations/interview.validation.js";
 
 /*
 req.file
@@ -76,6 +82,43 @@ export const generateInterviewReportController = handleAsyncError(async function
         },
     });
 });
+
+export const getInterviewReportByIdController = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    if (!id || typeof id !== "string") {
+        throw new AppError({
+            statusCode: HTTPSTATUSCODE.BAD_REQUEST,
+            publicMessage: "Expected a valid interview report ID",
+            errorCode: ErrorCodeEnum.BAD_REQUEST,
+        });
+    }
+
+    if (!req.user) {
+        throw new AppError({
+            statusCode: HTTPSTATUSCODE.UNAUTHORIZED,
+            publicMessage: "Uauthorized user can't perform this action",
+            errorCode: ErrorCodeEnum.AUTH_UNAUTHORIZED_ACCESS,
+        });
+    }
+
+    const interviewReport = await getInterviewReportByIdService(id, req.user.id);
+
+    if (!interviewReport) {
+        throw new AppError({
+            statusCode: HTTPSTATUSCODE.NOT_FOUND,
+            publicMessage: "Interview report not found",
+            errorCode: ErrorCodeEnum.RESOURCE_NOT_FOUND,
+        });
+    }
+
+    return sendResponse(res, {
+        statusCode: HTTPSTATUSCODE.OK,
+        status: "success",
+        data: {
+            interviewReport: interviewReportIdSchema.parse(interviewReport),
+        },
+    });
+};
 
 const demoInterviewReport = {
     id: "cmrqnth6900001so762kej5aa",
