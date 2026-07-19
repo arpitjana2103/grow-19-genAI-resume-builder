@@ -34,5 +34,3 @@ export function formatDate(dateString: string) {
 
     return `${day}-${month}-${year}, ${String(hours).padStart(2, "0")}:${minutes} ${period}`;
 }
-
-console.log(formatDate("2026-07-18T17:47:40.209Z"));

@@ -17,7 +17,7 @@ export const PreparationPlanSchema = z.object({
     tasks: z.array(z.string()),
 });
 
-export const InterViewReportAIResponseSchema = z.object({
+export const InterViewReportResponseSchema = z.object({
     id: z.string(),
     jobTitle: z.string(),
     matchScore: z.number().min(0).max(100),
@@ -32,4 +32,4 @@ export type TQuestion = z.infer<typeof QuestionSchema>;
 export type TSkillGap = z.infer<typeof SkillGapSchema>;
 export type TPreparationPlan = z.infer<typeof PreparationPlanSchema>;
 
-export type TInterViewReportAIResponse = z.infer<typeof InterViewReportAIResponseSchema>;
+export type TInterViewReportAIResponse = z.infer<typeof InterViewReportResponseSchema>;

@@ -9,4 +9,5 @@ export const generateInterviewReportInputSchema = z.object({
 
 export const interviewReportIdSchema = InterViewReportAIResponseSchema.extend({
     id: z.string(),
+    createdAt: z.date(),
 });

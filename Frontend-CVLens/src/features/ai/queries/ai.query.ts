@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 
-import { createInterviewReport } from "../services/ai.service";
+import { createInterviewReport, getInterviewReportById } from "../services/ai.service";
 
 const TOAST_ID = "create-interview-report";
 
@@ -20,7 +20,7 @@ export function useCreateInterviewReportMutation() {
                 id: TOAST_ID,
                 duration: 4000,
             });
-            console.log("From onSuccess ... ");
+
             const interviewReportId = data.data.interviewReport.id;
             await navigate(`/report/${interviewReportId}`);
         },
@@ -35,5 +35,13 @@ export function useCreateInterviewReportMutation() {
                 toast.error("Failed to create Interview report", { id: TOAST_ID, duration: 4000 });
             }
         },
+    });
+}
+
+export function useInterviewReportQuery(id: string) {
+    return useQuery({
+        queryKey: ["interview-report", id],
+        queryFn: () => getInterviewReportById(id),
+        retry: false,
     });
 }

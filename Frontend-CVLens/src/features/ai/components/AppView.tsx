@@ -36,14 +36,16 @@ export default function AppView() {
     const handleSubmit = async function (e: React.SyntheticEvent<HTMLFormElement>) {
         e.preventDefault();
         if (jobDescription.length < 300) {
-            toast.error("Job description must be at least 300 characters");
+            toast.error("Job description must be at least 300 characters", {
+                id: "appview-toast",
+            });
             return;
         }
         if (selfDescription.length === 0) {
             setSelfDescription("Using Resume Data as Self-Description");
         }
         if (!file) {
-            toast.error("Please upload a resume");
+            toast.error("Please upload a resume", { id: "appview-toast" });
             return;
         }
 
