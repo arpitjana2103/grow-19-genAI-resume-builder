@@ -58,7 +58,7 @@ export const generateInterviewReportController = handleAsyncError(async function
         selfDescription: selfDescription ?? "consider resume data",
     });
 
-    const interviewReport = await createInterViewReportService({
+    const interviewReportId = await createInterViewReportService({
         ...interviewReportByAi,
         userId: req.user.id,
         jobDescription: jobDescription,
@@ -70,7 +70,9 @@ export const generateInterviewReportController = handleAsyncError(async function
         statusCode: HTTPSTATUSCODE.CREATED,
         status: "success",
         data: {
-            interviewReport: interviewReport,
+            interviewReport: {
+                id: interviewReportId,
+            },
         },
     });
 });

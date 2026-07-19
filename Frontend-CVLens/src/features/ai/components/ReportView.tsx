@@ -1,6 +1,3 @@
-import { Divide } from "lucide-react";
-import { parse } from "zod/v4/core";
-
 import geminiImg from "@/assets/gemini.png";
 import {
     Accordion,
