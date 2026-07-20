@@ -10,14 +10,19 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState, type ChangeEvent, type DragEvent } from "react";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router";
 
 import geminiImg from "@/assets/gemini.png";
 import AppHeading from "@/components/shared/AppHeading";
+import ViewLoader from "@/components/shared/ViewLoader";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { cn, formatFileSize } from "@/lib/utils";
+import { cn, formatDate, formatFileSize } from "@/lib/utils";
 
-import { useCreateInterviewReportMutation } from "../queries/ai.query";
+import {
+    useCreateInterviewReportMutation,
+    useInterviewReportsOfUserQuery,
+} from "../queries/ai.query";
 
 export default function AppView() {
     const [jobDescription, setJobDescription] = useState("");
@@ -50,8 +55,8 @@ export default function AppView() {
         }
 
         await createInterviewReportMutation.mutateAsync({
-            jobDescription,
-            selfDescription,
+            jobDescription: jobDescription,
+            selfDescription: selfDescription,
             resume: file,
         });
 
@@ -106,31 +111,46 @@ export default function AppView() {
 }
 
 function InterviewHistory() {
+    const query = useInterviewReportsOfUserQuery();
+    if (query.isLoading) {
+        return <ViewLoader />;
+    }
+
+    const data = query.data ?? [];
+
     return (
         <div className="mt-8 cursor-pointer">
             <h1 className="mb-4 font-head text-xl">History</h1>
             <div className="flex flex-wrap gap-4">
-                <div className="group w-fit border-2 border-foreground p-4 hover:bg-primary">
-                    <p className="mb-2 font-semibold text-foreground/50">ABC123456</p>
-                    <div className="flex gap-4">
-                        <div>
-                            <HugeiconsIcon icon={ClipboardClockIcon} strokeWidth={2} />
-                        </div>
+                {data.map(function (report) {
+                    return (
+                        <Link key={report.id} to={`/report/${report.id}`}>
+                            <div className="group w-fit border-2 border-foreground bg-white p-4 hover:bg-primary">
+                                <p className="mb-2 font-semibold text-foreground/50">
+                                    {report.id.toUpperCase()}
+                                </p>
+                                <div className="flex gap-4">
+                                    <div>
+                                        <HugeiconsIcon icon={ClipboardClockIcon} strokeWidth={2} />
+                                    </div>
 
-                        <div className="">
-                            <h3 className="font-head">Mern Stack Developer</h3>
-                            <p>21 March 1999, 5:30 pm</p>
-                        </div>
+                                    <div className="">
+                                        <h3 className="font-head">{report.jobTitle}</h3>
+                                        <p> {formatDate(report.createdAt)}</p>
+                                    </div>
 
-                        <div>
-                            <HugeiconsIcon
-                                icon={ArrowRight02Icon}
-                                strokeWidth={2}
-                                className="text-primaryDark group-hover:text-foreground"
-                            />
-                        </div>
-                    </div>
-                </div>
+                                    <div>
+                                        <HugeiconsIcon
+                                            icon={ArrowRight02Icon}
+                                            strokeWidth={2}
+                                            className="text-primaryDark group-hover:text-foreground"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </Link>
+                    );
+                })}
             </div>
         </div>
     );
@@ -156,13 +176,13 @@ function JobDescription({
             <div className="relative grow">
                 <textarea
                     placeholder="Paste the full job description here ... "
-                    value={jobDescription.slice(0, maxLength)}
-                    onChange={(e) => setJobDescription(e.target.value)}
+                    value={jobDescription}
+                    onChange={(e) => setJobDescription(e.target.value.slice(0, maxLength))}
                     className="h-80 w-full resize-none bg-foreground p-4 pt-12 text-base text-background focus:outline-none lg:h-full"
                 ></textarea>
                 <div className="absolute top-4 flex w-full items-center justify-between px-4 text-primary">
-                    <span>min : 300 & max : 2000</span>
-                    <span>curr : {jobDescription.length}</span>
+                    <span className="bg-foreground px-2">min : 300 & max : {maxLength}</span>
+                    <span className="bg-foreground px-2">curr : {jobDescription.length}</span>
                 </div>
             </div>
         </div>
@@ -203,6 +223,7 @@ function SelfDescription({
     setSelfDescription: React.Dispatch<React.SetStateAction<string>>;
 }) {
     const [checked, setChecked] = useState(false);
+    const maxLength = 1000;
 
     function handleCheckChange(value: boolean) {
         if (value) {
@@ -219,13 +240,15 @@ function SelfDescription({
             <div className="relative grow">
                 <textarea
                     value={selfDescription}
-                    onChange={(e) => setSelfDescription(e.target.value)}
+                    onChange={(e) => setSelfDescription(e.target.value.slice(0, maxLength))}
                     className="h-60 w-full resize-none bg-foreground p-4 pt-12 text-base text-background focus:outline-none lg:h-full"
                     placeholder="Briefly describe your experience, key skills, and years of experience."
                     disabled={checked}
                 ></textarea>
                 <div className="absolute top-4 flex w-full items-center justify-end px-4 text-primary">
-                    <span className="">408 / 1000</span>
+                    <span className="bg-foreground px-2">
+                        {selfDescription.length} / {maxLength}
+                    </span>
                 </div>
                 <div className="absolute right-4 bottom-3 mt-2 flex cursor-pointer items-center justify-end gap-3 bg-foreground p-2">
                     <label

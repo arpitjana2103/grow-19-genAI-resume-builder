@@ -3,12 +3,16 @@ import { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 
-import { createInterviewReport, getInterviewReportById } from "../services/ai.service";
+import {
+    createInterviewReport,
+    getInterviewReportById,
+    getInterviewReportsOfUser,
+} from "../services/ai.service";
 
 const TOAST_ID = "create-interview-report";
 
 export function useCreateInterviewReportMutation() {
-    // const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
     return useMutation({
         mutationFn: createInterviewReport,
@@ -16,6 +20,7 @@ export function useCreateInterviewReportMutation() {
             toast.loading("Generating interview report...", { id: TOAST_ID, duration: 30 * 1000 });
         },
         onSuccess: async function (data) {
+            await queryClient.invalidateQueries({ queryKey: ["interview-reports"] });
             toast.success("Interview report generated successfully!", {
                 id: TOAST_ID,
                 duration: 4000,
@@ -42,6 +47,14 @@ export function useInterviewReportQuery(id: string) {
     return useQuery({
         queryKey: ["interview-report", id],
         queryFn: () => getInterviewReportById(id),
+        retry: false,
+    });
+}
+
+export function useInterviewReportsOfUserQuery() {
+    return useQuery({
+        queryKey: ["interview-reports"],
+        queryFn: getInterviewReportsOfUser,
         retry: false,
     });
 }

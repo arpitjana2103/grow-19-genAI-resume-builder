@@ -1,6 +1,9 @@
 import { create as axiosCreateInstance } from "axios";
 
-import { InterViewReportResponseSchema } from "../schemas/report.schema";
+import {
+    InterViewReportResponseSchema,
+    InterviewReportsOfAUserSchema,
+} from "../schemas/report.schema";
 
 const BE_ORIGIN = import.meta.env.VITE_BACKEND_ORIGIN;
 
@@ -15,9 +18,10 @@ export async function createInterviewReport({
     selfDescription: string;
     resume: File;
 }) {
+    console.log(jobDescription.length, selfDescription.length);
     const formData = new FormData();
-    formData.append("jobDescription", jobDescription);
-    formData.append("selfDescription", selfDescription);
+    formData.append("jobDescription", jobDescription.replace(/\r?\n/g, " "));
+    formData.append("selfDescription", selfDescription.replace(/\r?\n/g, " "));
     formData.append("resume", resume);
 
     const response = await axiosClient.post("/interview", formData);
@@ -28,6 +32,11 @@ export async function createInterviewReport({
 export async function getInterviewReportById(id: string) {
     const response = await axiosClient.get(`/interview/${id}`);
     const data = response.data;
-    console.log("data", data);
     return InterViewReportResponseSchema.parse(data.data.interviewReport);
+}
+
+export async function getInterviewReportsOfUser() {
+    const response = await axiosClient.get("/interview");
+    const data = response.data;
+    return InterviewReportsOfAUserSchema.parse(data.data.interviewReports);
 }

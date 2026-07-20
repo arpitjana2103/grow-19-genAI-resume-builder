@@ -6,9 +6,6 @@ export const parsePDF = async function (buffer: Buffer) {
     const textResult = await parser.getText();
     const infoResult = await parser.getInfo();
 
-    console.log("PDF PARSER - textResult:", textResult);
-    console.log("PDF PARSER - infoResult:", infoResult);
-
     await parser.destroy(); // release worker resources
 
     return {

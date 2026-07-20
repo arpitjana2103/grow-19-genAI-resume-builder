@@ -28,6 +28,10 @@ export const InterViewReportResponseSchema = z.object({
     createdAt: z.string(),
 });
 
+export const InterviewReportsOfAUserSchema = z.array(
+    z.object({ jobTitle: z.string(), createdAt: z.string(), id: z.string() }),
+);
+
 export type TQuestion = z.infer<typeof QuestionSchema>;
 export type TSkillGap = z.infer<typeof SkillGapSchema>;
 export type TPreparationPlan = z.infer<typeof PreparationPlanSchema>;

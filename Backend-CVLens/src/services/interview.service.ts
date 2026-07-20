@@ -73,51 +73,17 @@ export const getInterviewReportByIdService = async function (id: string, userId:
             preparationPlan: true,
         },
     });
+};
 
-    // return await tx.interviewReport.findUniqueOrThrow({
-    //     where: {
-    //         id: interviewReport.id,
-    //     },
-    //     select: {
-    //         id: true,
-    //         jobTitle: true,
-    //         jobDescription: true,
-    //         selfDescription: true,
-    //         resumeData: true,
-    //         matchScore: true,
-    //         createdAt: true,
-    //         updatedAt: true,
-
-    //         technicalQuestions: {
-    //             select: {
-    //                 question: true,
-    //                 intention: true,
-    //                 answer: true,
-    //             },
-    //         },
-
-    //         behavioralQuestions: {
-    //             select: {
-    //                 question: true,
-    //                 intention: true,
-    //                 answer: true,
-    //             },
-    //         },
-
-    //         skillGaps: {
-    //             select: {
-    //                 skill: true,
-    //                 severity: true,
-    //             },
-    //         },
-
-    //         preparationPlan: {
-    //             select: {
-    //                 day: true,
-    //                 focus: true,
-    //                 tasks: true,
-    //             },
-    //         },
-    //     },
-    // });
+export const getAllInterviewReportsOfAUserService = async function (userId: string) {
+    return await prisma.interviewReport.findMany({
+        where: {
+            userId: userId,
+        },
+        select: {
+            jobTitle: true,
+            createdAt: true,
+            id: true,
+        },
+    });
 };

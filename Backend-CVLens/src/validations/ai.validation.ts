@@ -5,13 +5,13 @@ const descriptions = {
     matchScore:
         "A score between 0 and 100 indicating how well the candidate's profile matches the job describe",
     technicalQuestions: {
-        self: "Technical questions that can be asked in the interview along with their intention and how to answer them [minCount: 6, maxCount: 10] [countOf technicalQuestions === countOf behavioralQuestions]",
+        self: "Technical questions that can be asked in the interview along with their intention and how to answer them [minCount: 10, maxCount: 14] [countOf technicalQuestions === countOf behavioralQuestions]",
         question: "The technical question can be asked in the interview",
         intention: "The intention of interviewer behind asking this question",
         answer: "How to answer this question, what points to cover, what approach to take etc.",
     },
     behavioralQuestions: {
-        self: "Behavioral questions that can be asked in the interview along with their intention and how to answer them [minCount: 6, maxCount: 10] [countOf technicalQuestions === countOf behavioralQuestions]",
+        self: "Behavioral questions that can be asked in the interview along with their intention and how to answer them [minCount: 10, maxCount: 14] [countOf technicalQuestions === countOf behavioralQuestions]",
         question: "The behavioral question can be asked in the interview",
         intention: "The intention of interviewer behind asking this question",
         answer: "How to answer this question, what points to cover, what approach to take etc.",
