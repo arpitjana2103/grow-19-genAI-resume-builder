@@ -2,7 +2,6 @@ import {
     ArrowRight02Icon,
     Briefcase07Icon,
     Cancel01Icon,
-    ClipboardClockIcon,
     CloudUploadIcon,
     Male02Icon,
     Pdf01Icon,
@@ -113,11 +112,16 @@ export default function AppView() {
 
 function InterviewHistory() {
     const query = useInterviewReportsOfUserQuery();
+
     if (query.isLoading) {
         return <ViewLoader />;
     }
 
     const data = query.data ?? [];
+
+    if (data.length === 0) {
+        return null;
+    }
 
     return (
         <div className="mt-8 cursor-pointer">
@@ -126,13 +130,14 @@ function InterviewHistory() {
                 {data.map(function (report) {
                     return (
                         <Link key={report.id} to={`/report/${report.id}`}>
-                            <div className="group w-fit border-2 border-foreground bg-white p-4 hover:bg-primary">
+                            <div className="group w-fit border-2 border-foreground bg-white p-4 transition-colors hover:bg-primary">
                                 <p className="mb-2 font-semibold text-foreground/50">
                                     {report.id.toUpperCase()}
                                 </p>
-                                <div className="flex gap-4">
-                                    <div>
-                                        <HugeiconsIcon icon={ClipboardClockIcon} strokeWidth={2} />
+                                <div className="flex gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary transition-colors group-hover:bg-background">
+                                        {/*<HugeiconsIcon icon={ClipboardClockIcon} strokeWidth={2} />*/}
+                                        <span className="font-semibold">{report.matchScore}</span>
                                     </div>
 
                                     <div className="">

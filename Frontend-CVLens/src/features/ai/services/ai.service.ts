@@ -45,3 +45,7 @@ export async function generateResumePdfService(id: string) {
     const response = await axiosClient.get(`/interview/${id}/resume`, { responseType: "blob" });
     return URL.createObjectURL(response.data);
 }
+
+export async function deleteInterviewReportById(id: string) {
+    await axiosClient.delete(`/interview/${id}`);
+}

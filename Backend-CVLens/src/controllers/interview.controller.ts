@@ -6,6 +6,7 @@ import { handleAsyncError } from "../middlewares/async-error-handler.middleware.
 import { generateInterviewReport, generateResumePdf } from "../services/ai.service.js";
 import {
     createInterViewReportService,
+    deleteInterviewReportByIdService,
     getAllInterviewReportsOfAUserService,
     getInterviewReportByIdService,
 } from "../services/interview.service.js";
@@ -124,6 +125,36 @@ export const getInterviewReportByIdController = handleAsyncError(async function 
         data: {
             interviewReport: InterViewReportByIdResponseSchema.parse(interviewReport),
         },
+    });
+});
+
+export const deleteInterviewReportByIdController = handleAsyncError(async function (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) {
+    const { interviewReportId } = req.params;
+    if (!interviewReportId || typeof interviewReportId !== "string") {
+        throw new AppError({
+            statusCode: HTTPSTATUSCODE.BAD_REQUEST,
+            publicMessage: "Expected a valid interview report ID",
+            errorCode: ErrorCodeEnum.BAD_REQUEST,
+        });
+    }
+
+    if (!req.user) {
+        throw new AppError({
+            statusCode: HTTPSTATUSCODE.UNAUTHORIZED,
+            publicMessage: "Uauthorized user can't perform this action",
+            errorCode: ErrorCodeEnum.AUTH_UNAUTHORIZED_ACCESS,
+        });
+    }
+
+    await deleteInterviewReportByIdService(interviewReportId, req.user.id);
+
+    return sendResponse(res, {
+        statusCode: HTTPSTATUSCODE.OK,
+        status: "success",
     });
 });
 

@@ -2,6 +2,15 @@ import { LoginCircle02FreeIcons, LogoutCircle02Icon } from "@hugeicons/core-free
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, useLocation, useNavigate } from "react-router";
 
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+} from "@/components/ui/dialog";
 import { useLogoutMutation } from "@/features/auth/queries/auth.query";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/auth.provider";
@@ -17,9 +26,11 @@ export default function NavBar({ className }: { className?: string }) {
     const isHomeRoute = pathname === "/";
     const isAppRoute = pathname === "/app";
     const logoutMutation = useLogoutMutation();
+
     const handleLogut = async function () {
         await logoutMutation.mutateAsync();
     };
+
     return (
         <header className={cn("w-screen", className)}>
             <Container>
@@ -44,16 +55,37 @@ export default function NavBar({ className }: { className?: string }) {
                             </MyButton>
                         )}
                         {isAuthenticated && isAppRoute && (
-                            <MyButton varient="holo" onClick={handleLogut}>
-                                <span>Logout</span>
-                                <span>
-                                    <HugeiconsIcon
-                                        strokeWidth={2.5}
-                                        icon={LogoutCircle02Icon}
-                                        className="text-foreground"
-                                    />
-                                </span>
-                            </MyButton>
+                            <Dialog>
+                                <DialogTrigger>
+                                    <MyButton varient="holo">
+                                        <span>Logout</span>
+                                        <span>
+                                            <HugeiconsIcon
+                                                strokeWidth={2.5}
+                                                icon={LogoutCircle02Icon}
+                                                className="text-foreground"
+                                            />
+                                        </span>
+                                    </MyButton>
+                                </DialogTrigger>
+                                <DialogContent className="bg-primary/90">
+                                    <DialogHeader>
+                                        <DialogTitle>Are you sure you want to logout ?</DialogTitle>
+                                    </DialogHeader>
+                                    <DialogFooter className="mt-4 bg-white/90">
+                                        <DialogClose render={<MyButton varient="holo" />}>
+                                            Cancel
+                                        </DialogClose>
+                                        <DialogClose
+                                            render={
+                                                <MyButton varient="filled" onClick={handleLogut} />
+                                            }
+                                        >
+                                            Logout
+                                        </DialogClose>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
                         )}
                         {isHomeRoute && (
                             <MyButton varient="filled" onClick={() => navigate("/app")}>

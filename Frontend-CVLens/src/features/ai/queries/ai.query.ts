@@ -8,9 +8,8 @@ import {
     getInterviewReportById,
     getInterviewReportsOfUser,
     generateResumePdfService,
+    deleteInterviewReportById,
 } from "../services/ai.service";
-
-const TOAST_ID = "create-interview-report";
 
 export function useCreateInterviewReportMutation() {
     const queryClient = useQueryClient();
@@ -18,12 +17,15 @@ export function useCreateInterviewReportMutation() {
     return useMutation({
         mutationFn: createInterviewReport,
         onMutate: function () {
-            toast.loading("Generating interview report...", { id: TOAST_ID, duration: 30 * 1000 });
+            toast.loading("Generating interview report...", {
+                id: "create-report",
+                duration: 30 * 1000,
+            });
         },
         onSuccess: async function (data) {
             await queryClient.invalidateQueries({ queryKey: ["interview-reports"] });
             toast.success("Interview report generated successfully!", {
-                id: TOAST_ID,
+                id: "create-report",
                 duration: 4000,
             });
 
@@ -35,10 +37,13 @@ export function useCreateInterviewReportMutation() {
             if (error instanceof AxiosError) {
                 const errorData = error.response?.data;
                 console.log(errorData);
-                toast.error(errorData.message, { id: TOAST_ID });
+                toast.error(errorData.message, { id: "create-report" });
             } else {
                 console.log(error);
-                toast.error("Failed to create Interview report", { id: TOAST_ID, duration: 4000 });
+                toast.error("Failed to create Interview report", {
+                    id: "create-report",
+                    duration: 4000,
+                });
             }
         },
     });
@@ -77,10 +82,41 @@ export function useGenerateResumeMutation() {
             if (error instanceof AxiosError) {
                 const errorData = error.response?.data;
                 console.log(errorData);
-                toast.error(errorData.message, { id: TOAST_ID });
+                toast.error(errorData.message, { id: "generate-resume" });
             } else {
                 console.log(error);
-                toast.error("Failed to Generate Resume", { id: TOAST_ID, duration: 4000 });
+                toast.error("Failed to Generate Resume", { id: "generate-resume", duration: 4000 });
+            }
+        },
+    });
+}
+
+export function useDeleteInterviewReportMutation() {
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: deleteInterviewReportById,
+        onMutate: function () {
+            toast.loading("Generating resume...", { id: "delete-resume", duration: 30 * 1000 });
+        },
+        onSuccess: async function () {
+            toast.success("Resume generated successfully!", {
+                id: "delete-resume",
+                duration: 4000,
+            });
+            await queryClient.invalidateQueries({ queryKey: ["interview-reports"] });
+            await navigate("/app");
+        },
+        onError: function (error) {
+            console.log("Error from : useRegisterMutation");
+            if (error instanceof AxiosError) {
+                const errorData = error.response?.data;
+                console.log(errorData);
+                toast.error(errorData.message, { id: "delete-resume" });
+            } else {
+                console.log(error);
+                toast.error("Failed to Generate Resume", { id: "delete-resume", duration: 4000 });
             }
         },
     });

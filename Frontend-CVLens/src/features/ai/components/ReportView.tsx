@@ -1,13 +1,14 @@
 import type { UseMutationResult } from "@tanstack/react-query";
 
 import { Button } from "@base-ui/react/button";
-import { FileDownloadIcon } from "@hugeicons/core-free-icons";
+import { Delete02Icon, FileDownloadIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router";
 
 import geminiImg from "@/assets/gemini.png";
+import MyButton from "@/components/shared/MyButton";
 import ViewLoader from "@/components/shared/ViewLoader";
 import {
     Accordion,
@@ -15,10 +16,23 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+} from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn, formatDate } from "@/lib/utils";
 
-import { useGenerateResumeMutation, useInterviewReportQuery } from "../queries/ai.query";
+import {
+    useDeleteInterviewReportMutation,
+    useGenerateResumeMutation,
+    useInterviewReportQuery,
+} from "../queries/ai.query";
 import {
     type TPreparationPlan,
     type TQuestion,
@@ -128,12 +142,54 @@ export default function ReportView() {
 
                 <PreparationPlan plan={interviewReport.preparationPlan} />
 
-                <GenerateResumeBtn
-                    generateResumeMutation={generateResumeMutation}
-                    handleResumeAction={handleResumeAction}
-                />
+                <div className="flex w-full items-center justify-between px-6">
+                    <DeleteReport reportId={interviewReport.id} />
+                    <GenerateResumeBtn
+                        generateResumeMutation={generateResumeMutation}
+                        handleResumeAction={handleResumeAction}
+                    />
+                </div>
             </div>
         </div>
+    );
+}
+
+function DeleteReport({ reportId }: { reportId: string }) {
+    const deleteReportMutation = useDeleteInterviewReportMutation();
+
+    const handleDelete = async function () {
+        await deleteReportMutation.mutateAsync(reportId);
+    };
+
+    return (
+        <Dialog>
+            <DialogTrigger>
+                <Button className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white">
+                    <HugeiconsIcon icon={Delete02Icon} className="size-6" />
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="w-90 bg-primary/90">
+                <DialogHeader>
+                    <DialogTitle className="leading-6">
+                        Are you sure you want to delete this Interview Report ?{" "}
+                    </DialogTitle>
+                </DialogHeader>
+                <DialogFooter className="mt-4 bg-white/90">
+                    <DialogClose render={<MyButton varient="holo" />}>Cancel</DialogClose>
+                    <DialogClose
+                        render={
+                            <MyButton
+                                varient="filled"
+                                className="border-red-400 bg-red-400 hover:border-red-500 hover:bg-red-500"
+                                onClick={handleDelete}
+                            />
+                        }
+                    >
+                        Delete
+                    </DialogClose>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 }
 
@@ -146,7 +202,7 @@ function GenerateResumeBtn({
 }) {
     return (
         <Button
-            className="mr-6 flex cursor-pointer items-center justify-center gap-2 self-end rounded-full border-4 border-primary bg-white px-4 py-2 text-lg text-foreground shadow-2xl transition-all hover:translate-y-0.5 hover:bg-white"
+            className="flex cursor-pointer items-center justify-center gap-2 self-end rounded-full border-4 border-primary bg-white px-4 py-2 text-lg text-foreground shadow-2xl transition-all hover:translate-y-0.5 hover:bg-white"
             onClick={handleResumeAction}
             disabled={generateResumeMutation.isPending}
         >

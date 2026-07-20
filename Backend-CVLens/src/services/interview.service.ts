@@ -82,8 +82,18 @@ export const getAllInterviewReportsOfAUserService = async function (userId: stri
         },
         select: {
             jobTitle: true,
+            matchScore: true,
             createdAt: true,
             id: true,
+        },
+    });
+};
+
+export const deleteInterviewReportByIdService = async function (reportId: string, userId: string) {
+    await prisma.interviewReport.delete({
+        where: {
+            id: reportId,
+            userId: userId,
         },
     });
 };

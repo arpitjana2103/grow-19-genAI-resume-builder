@@ -201,7 +201,7 @@ export function generateResumePdfPrompt({
 
     IMPORTANT:
 
-    - Do NOT specify page margins inside @page.
+    - Do NOT specify page margins / paddings inside @page.
     - Do NOT use body margins for printable margins.
     - Puppeteer will provide the page margins.
     - Do NOT use absolute positioning.

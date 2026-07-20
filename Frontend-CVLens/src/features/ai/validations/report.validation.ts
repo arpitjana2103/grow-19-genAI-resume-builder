@@ -32,7 +32,12 @@ export const InterViewReportByIdResponseSchema = z.object({
 });
 
 export const InterviewReportsOfAUserSchema = z.array(
-    z.object({ jobTitle: z.string(), createdAt: z.string(), id: z.string() }),
+    z.object({
+        jobTitle: z.string(),
+        createdAt: z.string(),
+        id: z.string(),
+        matchScore: z.number(),
+    }),
 );
 
 export type TQuestion = z.infer<typeof QuestionSchema>;
