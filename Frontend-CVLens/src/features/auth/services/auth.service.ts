@@ -1,4 +1,4 @@
-import { create as axiosCreateInstance } from "axios";
+import { create as axiosCreateInstance, AxiosError } from "axios";
 
 import {
     getMeResponseSchema,
@@ -22,8 +22,11 @@ export async function getUser() {
         } else {
             return null;
         }
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            const errorData = error.response?.data;
+            console.log(errorData);
+        }
         return null;
     }
 }

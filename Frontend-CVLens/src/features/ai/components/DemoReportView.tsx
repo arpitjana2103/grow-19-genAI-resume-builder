@@ -1,6 +1,3 @@
-import { Button } from "@base-ui/react/button";
-import { Delete02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { useNavigate } from "react-router";
 
 import geminiImg from "@/assets/gemini.png";
@@ -279,37 +276,37 @@ export default function DemoReportView() {
     );
 }
 
-function DeleteReportBtn() {
-    return (
-        <Dialog>
-            <DialogTrigger>
-                <span className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white">
-                    <HugeiconsIcon icon={Delete02Icon} className="size-6" />
-                </span>
-            </DialogTrigger>
-            <DialogContent className="w-90 bg-primary/90">
-                <DialogHeader>
-                    <DialogTitle className="leading-6">
-                        Only Logged in Users can perform this Action !
-                    </DialogTitle>
-                </DialogHeader>
-                <DialogFooter className="mt-4 bg-white/90">
-                    <DialogClose render={<MyButton varient="holo" />}>Cancel</DialogClose>
-                    <DialogClose
-                        render={
-                            <MyButton
-                                varient="filled"
-                                className="border-red-400 bg-red-400 hover:border-red-500 hover:bg-red-500"
-                            />
-                        }
-                    >
-                        Close
-                    </DialogClose>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    );
-}
+// function DeleteReportBtn() {
+//     return (
+//         <Dialog>
+//             <DialogTrigger>
+//                 <span className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white">
+//                     <HugeiconsIcon icon={Delete02Icon} className="size-6" />
+//                 </span>
+//             </DialogTrigger>
+//             <DialogContent className="w-90 bg-primary/90">
+//                 <DialogHeader>
+//                     <DialogTitle className="leading-6">
+//                         Only Logged in Users can perform this Action !
+//                     </DialogTitle>
+//                 </DialogHeader>
+//                 <DialogFooter className="mt-4 bg-white/90">
+//                     <DialogClose render={<MyButton varient="holo" />}>Cancel</DialogClose>
+//                     <DialogClose
+//                         render={
+//                             <MyButton
+//                                 varient="filled"
+//                                 className="border-red-400 bg-red-400 hover:border-red-500 hover:bg-red-500"
+//                             />
+//                         }
+//                     >
+//                         Close
+//                     </DialogClose>
+//                 </DialogFooter>
+//             </DialogContent>
+//         </Dialog>
+//     );
+// }
 
 function GenerateResumeBtn() {
     const navigate = useNavigate();
@@ -440,16 +437,16 @@ function CreatedAt({ createdAt }: { createdAt: string }) {
     return <span className="absolute top-4 left-4">{`Created @ ${formatDate(createdAt)}`}</span>;
 }
 
-function GeminiLogo() {
-    return (
-        <span className="absolute top-4 right-4 flex items-center gap-1.5 rounded-[0.3rem] bg-white p-1 px-1.5 pr-2 text-lg shadow-md sm:text-xl">
-            <span>
-                <img className="h-5 w-5 sm:h-6 sm:w-6" src={geminiImg} alt="" />
-            </span>
-            <span className="font-gemini font-medium text-[#3186ff]">Gemini</span>
-        </span>
-    );
-}
+// function GeminiLogo() {
+//     return (
+//         <span className="absolute top-4 right-4 flex items-center gap-1.5 rounded-[0.3rem] bg-white p-1 px-1.5 pr-2 text-lg shadow-md sm:text-xl">
+//             <span>
+//                 <img className="h-5 w-5 sm:h-6 sm:w-6" src={geminiImg} alt="" />
+//             </span>
+//             <span className="font-gemini font-medium text-[#3186ff]">Gemini</span>
+//         </span>
+//     );
+// }
 
 function SkillGapTable({ skillGaps }: SkillGapTableProps) {
     if (skillGaps.length === 0) {
