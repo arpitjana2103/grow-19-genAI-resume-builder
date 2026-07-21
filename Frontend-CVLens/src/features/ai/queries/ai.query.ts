@@ -33,7 +33,7 @@ export function useCreateInterviewReportMutation() {
             await navigate(`/report/${interviewReportId}`);
         },
         onError: function (error) {
-            console.log("Error from : useRegisterMutation");
+            console.log("Error from : useCreateInterviewReportMutation");
             if (error instanceof AxiosError) {
                 const errorData = error.response?.data;
                 console.log(errorData);
@@ -78,7 +78,7 @@ export function useGenerateResumeMutation() {
             });
         },
         onError: function (error) {
-            console.log("Error from : useRegisterMutation");
+            console.log("Error from : useGenerateResumeMutation");
             if (error instanceof AxiosError) {
                 const errorData = error.response?.data;
                 console.log(errorData);
@@ -109,7 +109,7 @@ export function useDeleteInterviewReportMutation() {
             await navigate("/app");
         },
         onError: function (error) {
-            console.log("Error from : useRegisterMutation");
+            console.log("Error from : useDeleteInterviewReportMutation");
             if (error instanceof AxiosError) {
                 const errorData = error.response?.data;
                 console.log(errorData);
