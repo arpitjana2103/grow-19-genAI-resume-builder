@@ -1,6 +1,7 @@
 import { Button } from "@base-ui/react/button";
 import { Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useNavigate } from "react-router";
 
 import geminiImg from "@/assets/gemini.png";
 import MyButton from "@/components/shared/MyButton";
@@ -230,10 +231,10 @@ export default function DemoReportView() {
                 <GenerateResumeBtn />
             </div>
 
-            <h1 className="text-center font-head text-xl sm:text-2xl">
+            {/*<h1 className="text-center font-head text-xl sm:text-2xl">
                 <span>Interview Report : </span>
                 <span className="text-primaryDark">{interviewReport.id.toUpperCase()}</span>
-            </h1>
+            </h1>*/}
             <div className="relative mt-6 flex flex-col items-center justify-center border-4 border-primary bg-foreground pt-16 pb-6 text-background">
                 <div
                     className={cn(
@@ -249,10 +250,10 @@ export default function DemoReportView() {
                     {interviewReport.jobTitle}
                 </h1>
                 <CreatedAt createdAt={interviewReport.createdAt} />
-                <GeminiLogo />
+                {/*<GeminiLogo />*/}
                 <SkillGapTable skillGaps={interviewReport.skillGaps as unknown as TSkillGap[]} />
 
-                <div className="mt-10 w-full bg-primary pt-8">
+                <div className="mt-0 w-full bg-primary pt-8 sm:mt-10">
                     <Tabs defaultValue="account" className="w-full">
                         <TabsList className="mx-auto bg-transparent">
                             <MyTabTrigger text="Behavioral Questions" />
@@ -269,8 +270,8 @@ export default function DemoReportView() {
 
                 <PreparationPlan plan={interviewReport.preparationPlan} />
 
-                <div className="flex w-full items-center justify-between px-6">
-                    <DeleteReportBtn />
+                <div className="flex w-full items-center justify-center">
+                    {/*<DeleteReportBtn />*/}
                     <GenerateResumeBtn />
                 </div>
             </div>
@@ -289,7 +290,7 @@ function DeleteReportBtn() {
             <DialogContent className="w-90 bg-primary/90">
                 <DialogHeader>
                     <DialogTitle className="leading-6">
-                        Only Logged in Users can perform this Action{" "}
+                        Only Logged in Users can perform this Action !
                     </DialogTitle>
                 </DialogHeader>
                 <DialogFooter className="mt-4 bg-white/90">
@@ -311,12 +312,13 @@ function DeleteReportBtn() {
 }
 
 function GenerateResumeBtn() {
+    const navigate = useNavigate();
     return (
         <Dialog>
             <DialogTrigger>
                 <span className="flex cursor-pointer items-center justify-center gap-2 self-end rounded-full border-4 border-primary bg-white px-4 py-2 text-lg text-foreground shadow-2xl transition-all hover:translate-y-0.5 hover:bg-white">
                     <span className="font-head">
-                        Generate an Accurate Resume with
+                        Generate Resume with
                         <span className={cn("pl-1 font-gemini font-medium text-blue-400")}>
                             {"  "}Gemini
                         </span>
@@ -329,7 +331,7 @@ function GenerateResumeBtn() {
             <DialogContent className="w-90 bg-primary/90">
                 <DialogHeader>
                     <DialogTitle className="leading-6">
-                        Only Logged in Users can perform this Action{" "}
+                        Only Logged in Users can perform this Action !
                     </DialogTitle>
                 </DialogHeader>
                 <DialogFooter className="mt-4 bg-white/90">
@@ -338,11 +340,12 @@ function GenerateResumeBtn() {
                         render={
                             <MyButton
                                 varient="filled"
-                                className="border-red-400 bg-red-400 hover:border-red-500 hover:bg-red-500"
+                                className="border-2 border-primary bg-primary text-foreground hover:text-background"
+                                onClick={() => navigate("/app")}
                             />
                         }
                     >
-                        Close
+                        Login
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>
@@ -414,7 +417,7 @@ export function MyAccordion({ questions }: { questions: TQuestion[] }) {
                 <AccordionItem
                     key={item.value}
                     value={item.value}
-                    className="border-b px-4 text-base last:border-b-0"
+                    className="border-b px-0 text-base last:border-b-0 sm:px-4"
                 >
                     <AccordionTrigger className="cursor-pointer text-base font-semibold hover:no-underline **:data-[slot=accordion-trigger-icon]:text-foreground">
                         {item.trigger}

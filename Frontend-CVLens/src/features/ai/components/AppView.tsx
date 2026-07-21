@@ -81,8 +81,8 @@ export default function AppView() {
                         />
                     </Profile>
                 </div>
-                <div className="mt-6 flex items-center justify-between">
-                    <p>AI Powered Strategy Generation • 30s Approx </p>
+                <div className="mt-6 flex w-full items-center justify-end sm:justify-between">
+                    <p className="hidden sm:block">AI Powered Strategy Generation • 30s Approx </p>
                     <SubmitBtn generatingReport={generatingReport} />
                 </div>
             </form>

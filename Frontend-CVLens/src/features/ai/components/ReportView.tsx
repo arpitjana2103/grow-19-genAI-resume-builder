@@ -69,7 +69,6 @@ export default function ReportView() {
     }
 
     const interviewReport = query.data;
-    console.log(JSON.stringify(query.data));
 
     const goodMatch = interviewReport.matchScore >= 60;
 
@@ -125,7 +124,7 @@ export default function ReportView() {
                 <GeminiLogo />
                 <SkillGapTable skillGaps={interviewReport.skillGaps} />
 
-                <div className="mt-10 w-full bg-primary pt-8">
+                <div className="mt-0 w-full bg-primary pt-8 sm:mt-10">
                     <Tabs defaultValue="account" className="w-full">
                         <TabsList className="mx-auto bg-transparent">
                             <MyTabTrigger text="Behavioral Questions" />
@@ -142,12 +141,14 @@ export default function ReportView() {
 
                 <PreparationPlan plan={interviewReport.preparationPlan} />
 
-                <div className="flex w-full items-center justify-between px-6">
-                    <DeleteReportBtn reportId={interviewReport.id} />
+                <div className="flex w-full flex-col items-center justify-between gap-4 px-6 xs:flex-row xs:gap-0">
                     <GenerateResumeBtn
                         generateResumeMutation={generateResumeMutation}
                         handleResumeAction={handleResumeAction}
                     />
+                    <div className="self-start xs:self-auto">
+                        <DeleteReportBtn reportId={interviewReport.id} />
+                    </div>
                 </div>
             </div>
         </div>
@@ -208,10 +209,10 @@ function GenerateResumeBtn({
         >
             <span className="font-head">
                 {generateResumeMutation.isPending && "Generating Resume With"}
-                {generateResumeMutation.data && "Resume is Ready to download"}
+                {generateResumeMutation.data && "Download Resume"}
                 {!generateResumeMutation.isPending &&
                     !generateResumeMutation.data &&
-                    "Generate an Accurate Resume with"}
+                    "Generate Resume with"}
                 <span
                     className={cn(
                         "pl-1 font-gemini font-medium text-blue-400",
@@ -308,7 +309,7 @@ export function MyAccordion({ questions }: { questions: TQuestion[] }) {
                 <AccordionItem
                     key={item.value}
                     value={item.value}
-                    className="border-b px-4 text-base last:border-b-0"
+                    className="border-b px-0 text-base last:border-b-0 sm:px-4"
                 >
                     <AccordionTrigger className="cursor-pointer text-base font-semibold hover:no-underline **:data-[slot=accordion-trigger-icon]:text-foreground">
                         {item.trigger}

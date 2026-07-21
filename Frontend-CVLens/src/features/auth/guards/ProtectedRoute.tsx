@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router";
 
+import Container from "@/components/layout/Container";
 import ViewLoader from "@/components/shared/ViewLoader";
 import { useAuthContext } from "@/providers/auth.provider";
 
@@ -14,5 +15,9 @@ export default function ProtectedRoute() {
         return <Navigate to="/login" replace />;
     }
 
-    return <Outlet />;
+    return (
+        <Container className="pb-20">
+            <Outlet />
+        </Container>
+    );
 }

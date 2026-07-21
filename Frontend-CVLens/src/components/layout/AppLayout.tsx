@@ -1,6 +1,5 @@
-import { Outlet } from "react-router";
+import { Outlet, ScrollRestoration } from "react-router";
 
-import Container from "./Container";
 import NavBar from "./NavBar";
 
 export default function AppLayout() {
@@ -8,10 +7,9 @@ export default function AppLayout() {
         <div className="flex h-dvh flex-col">
             <NavBar className="shrink-0 grow-0 basis-auto" />
             <main className="shrink grow basis-auto">
-                <Container className="pb-20">
-                    <Outlet />
-                </Container>
+                <Outlet />
             </main>
+            <ScrollRestoration />
         </div>
     );
 }
