@@ -7,10 +7,10 @@
     "type": "module",
     "main": "dist/index.js",
     "scripts": {
-        "postinstall": "prisma generate",
+        "postinstall": "prisma generate && npx puppeteer browsers install chrome",
         "start:dev": "cross-env NODE_ENV=development tsx watch --clear-screen=true src/index.ts",
         "start:prod:dev": "cross-env NODE_ENV=production tsx watch --clear-screen=true src/index.ts",
-        "start:prod": "cross-env NODE_ENV=production node dist/index.js",
+        "start:prod": "npx puppeteer browsers install chrome && cross-env NODE_ENV=production node dist/index.js",
         "build": "rimraf dist .tsbuildinfo && tsc",
         "typecheck": "tsc --noEmit",
         "typecheck:watch": "tsc --noEmit --watch",

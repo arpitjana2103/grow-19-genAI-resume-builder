@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import puppeteer from "puppeteer";
 import * as z from "zod";
 
+import { runningOnProduction } from "../configs/app.config.js";
 import { HTTPSTATUSCODE } from "../configs/http.config.js";
 import { ErrorCodeEnum } from "../enums/error-code.enum.js";
 import { AppError } from "../utils/errors/app-error.util.js";
@@ -63,7 +64,27 @@ export const generateInterviewReport = async function ({
 };
 
 async function generatePdfFromHtml(htmlContent: string) {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: [
+            // Safe on all platforms (Windows, Linux, Docker, Render)
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+
+            // CRITICAL for Render: /dev/shm is only 64MB on Render vs 2GB locally.
+            // Chrome uses /dev/shm by default for temp files — causes OOM crashes without this.
+            "--disable-dev-shm-usage",
+
+            // Safe memory-saving flags (work on all platforms)
+            "--disable-gpu",
+            "--no-first-run",
+
+            // Linux/Docker ONLY flags — reduce memory on Render free tier.
+            // DO NOT use on Windows: they disable Chrome's multi-process renderer architecture,
+            // causing TargetCloseError crashes when printing PDF.
+            ...(runningOnProduction() ? ["--no-zygote", "--single-process"] : []),
+        ],
+    });
 
     try {
         const page = await browser.newPage();

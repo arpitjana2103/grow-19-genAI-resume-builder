@@ -73,8 +73,6 @@ export default function ReportView() {
     const goodMatch = interviewReport.matchScore >= 60;
 
     const handleResumeAction = () => {
-        generateResumeMutation.mutate(interviewReport.id);
-
         if (generateResumeMutation.isPending) {
             return;
         }
@@ -91,6 +89,8 @@ export default function ReportView() {
 
             return;
         }
+
+        generateResumeMutation.mutate(interviewReport.id);
     };
 
     return (
