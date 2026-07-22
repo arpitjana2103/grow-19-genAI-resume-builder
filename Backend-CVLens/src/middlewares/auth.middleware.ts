@@ -30,6 +30,8 @@ export const NoAuth = handleAsyncError(async function (
     next: NextFunction,
 ) {
     if (req.isAuthenticated() && req.user) {
+        console.log("#### Log from NoAuth");
+        console.log(req.isAuthenticated(), req.user);
         throw new AppError({
             publicMessage: "Authenticated user can't perform this actions",
             statusCode: HTTPSTATUSCODE.BAD_REQUEST,
