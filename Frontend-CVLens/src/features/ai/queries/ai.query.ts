@@ -98,11 +98,14 @@ export function useDeleteInterviewReportMutation() {
     return useMutation({
         mutationFn: deleteInterviewReportById,
         onMutate: function () {
-            toast.loading("Deleting Resume ...", { id: "delete-resume", duration: 30 * 1000 });
+            toast.loading("Deleting Interview Report ...", {
+                id: "delete-report",
+                duration: 30 * 1000,
+            });
         },
         onSuccess: async function () {
-            toast.success("Resume Deleted Successfully !", {
-                id: "delete-resume",
+            toast.success("Report Deleted Successfully !", {
+                id: "delete-report",
                 duration: 4000,
             });
             await queryClient.invalidateQueries({ queryKey: ["interview-reports"] });
@@ -113,10 +116,10 @@ export function useDeleteInterviewReportMutation() {
             if (error instanceof AxiosError) {
                 const errorData = error.response?.data;
                 console.log(errorData);
-                toast.error(errorData.message, { id: "delete-resume" });
+                toast.error(errorData.message, { id: "delete-report" });
             } else {
                 console.log(error);
-                toast.error("Failed to Delete Resume", { id: "delete-resume", duration: 4000 });
+                toast.error("Failed to Delete Report", { id: "delete-report", duration: 4000 });
             }
         },
     });
