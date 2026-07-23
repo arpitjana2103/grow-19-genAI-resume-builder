@@ -19,23 +19,23 @@ export function useRegisterMutation() {
     return useMutation({
         mutationFn: register,
         onMutate: function () {
-            toast.loading("Registering user ...", { id: TOAST_ID });
+            toast.loading("Registering user ...", { id: TOAST_ID, duration: 30 * 60 * 1000 });
         },
         onSuccess: async function () {
             await queryClient.invalidateQueries({
                 queryKey: ["user"],
             });
-            toast.success("Registration successful", { id: TOAST_ID });
+            toast.success("Registration successful", { id: TOAST_ID, duration: 4000 });
         },
         onError: function (error) {
             console.log("Error from : useRegisterMutation");
             if (error instanceof AxiosError) {
                 const errorData = error.response?.data;
                 console.log(errorData);
-                toast.error(errorData.message, { id: TOAST_ID });
+                toast.error(errorData.message, { id: TOAST_ID, duration: 4000 });
             } else {
                 console.log(error);
-                toast.error("Registration failed", { id: TOAST_ID });
+                toast.error("Registration failed", { id: TOAST_ID, duration: 4000 });
             }
         },
     });
@@ -47,13 +47,13 @@ export function useLoginMutation() {
     return useMutation({
         mutationFn: login,
         onMutate: function () {
-            toast.loading("Logging in ...", { id: TOAST_ID });
+            toast.loading("Logging in ...", { id: TOAST_ID, duration: 30 * 60 * 1000 });
         },
         onSuccess: async function () {
             await queryClient.invalidateQueries({
                 queryKey: ["user"],
             });
-            toast.success("Login successful", { id: TOAST_ID });
+            toast.success("Login successful", { id: TOAST_ID, duration: 4000 });
         },
 
         onError: function (error) {
@@ -61,10 +61,10 @@ export function useLoginMutation() {
             if (error instanceof AxiosError) {
                 const errorData = error.response?.data;
                 console.log(errorData);
-                toast.error(errorData.message, { id: TOAST_ID });
+                toast.error(errorData.message, { id: TOAST_ID, duration: 4000 });
             } else {
                 console.log(error);
-                toast.error("Login failed", { id: TOAST_ID });
+                toast.error("Login failed", { id: TOAST_ID, duration: 4000 });
             }
         },
     });
@@ -76,23 +76,23 @@ export function useLogoutMutation() {
     return useMutation({
         mutationFn: logout,
         onMutate: function () {
-            toast.loading("Logging out ...", { id: TOAST_ID });
+            toast.loading("Logging out ...", { id: TOAST_ID, duration: 30 * 60 * 1000 });
         },
         onSuccess: async function () {
             await queryClient.invalidateQueries({
                 queryKey: ["user"],
             });
-            toast.success("Logout successful", { id: TOAST_ID });
+            toast.success("Logout successful", { id: TOAST_ID, duration: 4000 });
         },
         onError: function (error) {
             console.log("Error from : useLogoutMutation");
             if (error instanceof AxiosError) {
                 const errorData = error.response?.data;
                 console.log(errorData);
-                toast.error(errorData.message, { id: TOAST_ID });
+                toast.error(errorData.message, { id: TOAST_ID, duration: 4000 });
             } else {
                 console.log(error);
-                toast.error("Logout failed", { id: TOAST_ID });
+                toast.error("Logout failed", { id: TOAST_ID, duration: 4000 });
             }
         },
     });

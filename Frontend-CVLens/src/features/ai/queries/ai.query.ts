@@ -19,7 +19,7 @@ export function useCreateInterviewReportMutation() {
         onMutate: function () {
             toast.loading("Generating interview report...", {
                 id: "create-report",
-                duration: 30 * 1000,
+                duration: 30 * 60 * 1000,
             });
         },
         onSuccess: async function (data) {
@@ -69,7 +69,10 @@ export function useGenerateResumeMutation() {
     return useMutation({
         mutationFn: generateResumePdfService,
         onMutate: function () {
-            toast.loading("Generating resume...", { id: "generate-resume", duration: 30 * 1000 });
+            toast.loading("Generating resume...", {
+                id: "generate-resume",
+                duration: 30 * 60 * 1000,
+            });
         },
         onSuccess: function () {
             toast.success("Resume generated successfully!", {
@@ -100,7 +103,7 @@ export function useDeleteInterviewReportMutation() {
         onMutate: function () {
             toast.loading("Deleting Interview Report ...", {
                 id: "delete-report",
-                duration: 30 * 1000,
+                duration: 30 * 60 * 1000,
             });
         },
         onSuccess: async function () {

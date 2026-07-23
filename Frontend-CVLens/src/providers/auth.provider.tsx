@@ -24,13 +24,13 @@ export const AuthProvider = function ({ children }: AuthProviderProps) {
         const TOAST_ID = "auth-toast-provider";
 
         if (query.isLoading || query.isFetching) {
-            toast.loading("Authenticating ...", { id: TOAST_ID });
+            toast.loading("Authenticating ...", { id: TOAST_ID, duration: 30 * 60 * 1000 });
         } else if (query.isSuccess) {
             if (query.data !== null) {
                 const username = query.data?.username;
-                toast.success(`Welcome ${username} 💐`, { id: TOAST_ID });
+                toast.success(`Welcome ${username} 💐`, { id: TOAST_ID, duration: 4000 });
             } else {
-                toast("User not logged in !", { id: TOAST_ID, icon: "⚠️" });
+                toast("User not logged in !", { id: TOAST_ID, icon: "⚠️", duration: 4000 });
             }
         } else if (query.isError) {
             toast.error("Failed to get logged in user.", { id: TOAST_ID });
